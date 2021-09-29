@@ -18,6 +18,11 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    ],
+    script:[
+      {
+        src:'http://localhost:2000/socket.io/socket.io.js'
+      }
     ]
   },
 
@@ -27,6 +32,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    // '~/plugins/chat.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -47,8 +53,8 @@ export default {
   io: {
     // module options
     sockets: [{
-      name: 'main',
-      url: 'http://localhost:3000'
+      name: 'chat',
+      url: 'http://localhost:5000'
     }]
   },
 

@@ -29,17 +29,8 @@ export default {
         }
     },
     setup() {
-
     },
-    mounted() {
-        this.socket = this.$nuxtSocket({
-            channel: '/index'
-        })
-        this.socket
-            .on('someEvent', (msg, cb) => {
-                window.alert('event')
-            })
-    },
+   
 }
 </script>
 
