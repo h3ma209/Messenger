@@ -19,9 +19,9 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ],
-    script:[
+    script: [
       {
-        src:'http://localhost:2000/socket.io/socket.io.js'
+        src: 'http://localhost:2000/socket.io/socket.io.js'
       }
     ]
   },
@@ -32,7 +32,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    // '~/plugins/chat.js'
+    { src: '~/plugins/vuex-persist', ssr: false },
+    { src: '~/plugins/chat', ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

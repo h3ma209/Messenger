@@ -9,7 +9,7 @@
                 <v-divider></v-divider>
                 <v-card-text class="flex-grow-1 overflow-y-auto">
                     <div v-for="(msg, i) in msgs" :key='i'>
-                        <div :class="{ 'd-flex flex-row-reverse ': msg.me }">
+                        <div :class="{ 'd-flex flex-row-reverse ': msg.socket_id == socket_id }">
                             <div>
                                 <span class="d-block">-{{msg.username}}</span>
 
@@ -40,76 +40,44 @@
 
 </template>
 <script>
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 export default {
     setup() {
 
     },
     data() {
         return {
-
+            username: '',
             formMessage: '',
+            socket_id: '',
             msgs: [
-                { username: 'hema', content: 'hey this is test', me: true, },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'hema', content: 'hey this is test', me: true, },
-                { username: 'hema', content: 'hey this is test', me: true, },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'hema', content: 'hey this is test', me: true, },
-                { username: 'hema', content: 'hey this is test', me: true, },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'hema', content: 'hey this is test', me: true, },
-                { username: 'hema', content: 'hey this is test', me: true, },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'hema', content: 'hey this is test', me: true, },
-                { username: 'hema', content: 'hey this is test', me: true, },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'hema', content: 'hey this is test', me: true, },
-                { username: 'hema', content: 'hey this is test', me: true, },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'hema', content: 'hey this is test', me: true, },
-                { username: 'hema', content: 'hey this is test', me: true, },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'hema', content: 'hey this is test', me: true, },
-                { username: 'hema', content: 'hey this is test', me: true, },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'hema', content: 'hey this is test', me: true, },
-                { username: 'hema', content: 'hey this is test', me: true, },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'john', content: 'hey this is test' },
-                { username: 'hema', content: 'hey this is test', me: true, },
-
             ]
         }
     },
+    created() {
+        this.username = this.getUsername()
+        this.description = this.getDescription()
+    },
     mounted() {
-        this.socket = this.$nuxtSocket({
-            name:'chat',
-            channel:'/',
-            reconnection:false,
+        // console.log(this.$store.state)
+        this.socket = this.$root.socket
+        console.log(this.socket)
+        this.socket.emit('sendCreds', { username: this.username, description: this.description })
+        this.socket.on('getSocketId', (data) => {
+            this.socket_id = data
+        })
+        this.socket.on('getMsgs', (data) => {
+            console.log('msgssgsgs')
+            this.msgs = data
         })
 
     },
     methods: {
         sendMsg() {
-            this.socket.emit('test', {data:'hey'})
-        }
+            this.socket.emit('sendMsg', { socket_id: this.socket_id, content: this.formMessage, username: this.username })
+        },
+        ...mapMutations(['setUsername', 'setDescription']),
+        ...mapGetters(['getUsername', 'getDescription']),
     }
 }
 </script>
