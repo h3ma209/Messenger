@@ -21,7 +21,7 @@ export default {
     ],
     script: [
       {
-        src: 'http://localhost:2000/socket.io/socket.io.js'
+        src: 'http://localhost:2000/socket.io/socket.io.js',ssr:false
       }
     ]
   },
@@ -33,7 +33,6 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '~/plugins/vuex-persist', ssr: false },
-    { src: '~/plugins/chat', ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

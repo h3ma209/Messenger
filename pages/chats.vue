@@ -13,7 +13,7 @@
                             <div>
                                 <span class="d-block">-{{msg.username}}</span>
 
-                                <v-chip :color="msg.me ? 'primary' : ''" dark style="height:auto;white-space: normal;" class="pa-4 mb-2 text-center">
+                                <v-chip :color="msg.socket_id == socket_id ? 'primary' : ''" dark style="height:auto;white-space: normal;" class="pa-4 mb-2 text-center">
                                     {{ msg.content }}
                                     <sub class="ml-2" style="font-size: 0.5rem;">{{ msg.created_at }}</sub>
 
@@ -70,11 +70,17 @@ export default {
             console.log('msgssgsgs')
             this.msgs = data
         })
+        this.socket.on('updateMsgs', (data) => {
+            console.log('msgssgsgs')
+            this.msgs = data
+            
+        })
 
     },
     methods: {
         sendMsg() {
             this.socket.emit('sendMsg', { socket_id: this.socket_id, content: this.formMessage, username: this.username })
+            this.formMessage = ''
         },
         ...mapMutations(['setUsername', 'setDescription']),
         ...mapGetters(['getUsername', 'getDescription']),

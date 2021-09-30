@@ -18,7 +18,7 @@ var msgs = [
 io.on('connection', (socket) => {
     console.log('Connected')
     socket.emit('getSocketId', socket.id)
-    socket.emit('getMsgs',msgs)
+    socket.emit('getMsgs', msgs)
 
     socket.on('sendCreds', (msg) => {
         connected_users[socket.id] = msg
@@ -27,7 +27,8 @@ io.on('connection', (socket) => {
     })
     socket.on('sendMsg', (data) => {
         msgs.push(data)
-        socket.emit('updateMsgs', msgs)
+        console.log('added msg')
+        socket.broadcast.emit('updateMsgs', msgs)
     })
 
 })
