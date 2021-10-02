@@ -28,7 +28,7 @@ io.on('connection', (socket) => {
     socket.on('sendMsg', (data) => {
         msgs.push(data)
         console.log('added msg')
-        socket.broadcast.emit('updateMsgs', msgs)
+        io.emit('updateMsgs', msgs)
     })
 
 })
